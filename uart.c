@@ -29,12 +29,14 @@ int main (int argc, char* argv[]) {
 	// now we configure UART
 
 	struct termios tty;
+	// read the current tty configuration
 	if (tcgetattr(fd, &tty) != 0) {
 		perror("tcgetattr");
 		close(fd);
 		return 1;
 	}
 
+	// make it into raw mode
 	cfmakeraw(&tty);
 
 	// tty.c_cflag contains the settings we need to set which are: baud rate, data bits, parity, and stop bits
@@ -81,6 +83,7 @@ int main (int argc, char* argv[]) {
 	// now after configuring uart i will start sending messages
 	unsigned int i = 0;
 	while (i < 0x1000) {
+		// we define a buffer of 0x100 bytes to send/receive data
 		char buf[0x100];
 		// we send Hello World on each iteration
 		snprintf(buf, 0x100, "Hello World n: %d\n", i);
