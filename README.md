@@ -8,7 +8,7 @@ gcc uart.c -o uart
 ```
 
 ## run instructions
-you could either use a real uart device or use socat, i will be using socat in this example
+you could either use a real device or use socat, i will be using socat in this example
 ```
 socat -d -d pty,raw,echo=0 pty,raw,echo=0
 2026/05/15 19:11:59 socat[893204] N PTY is /dev/pts/2
