@@ -1,0 +1,2 @@
+# uart
+simple uart configuration
