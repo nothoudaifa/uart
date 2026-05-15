@@ -4,20 +4,20 @@
 #include <termios.h>
 #include <error.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <poll.h>
 
 
 int main (int argc, char* argv[]) {
+	// access interface path as the second argument
 	if (argc != 2) {
 		fprintf(stderr, "usage: %s path/to/uart/interface\n", argv[0]);
 		return 1;
 	}
+
 	// O_RDWR to get read and write access
 	// O_NOCTTY so it does not become the controlling terminal
-	// 
 	int fd = open(argv[1], O_RDWR | O_NOCTTY);
 
 	if (fd < 0) {
@@ -69,6 +69,14 @@ int main (int argc, char* argv[]) {
 	// i will set it to B115200, which is 115200 bits per second, 
 	cfsetispeed(&tty, B115200);
 	cfsetospeed(&tty, B115200);
+
+
+	// we set the new tty configration to our fd
+	if (tcsetattr(fd, TCSANOW, &tty) != 0)
+    {
+        perror("tcsetattr");
+        return 1;
+    }
 
 	// now after configuring uart i will start sending messages
 	unsigned int i = 0;
